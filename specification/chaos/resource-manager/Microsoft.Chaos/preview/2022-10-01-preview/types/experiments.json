@@ -317,19 +317,18 @@
     "selector": {
       "type": "object",
       "description": "Model that represents a selector in the Experiment resource.",
+      "discriminator": "type",
       "properties": {
         "type": {
           "type": "string",
           "description": "Enum of the selector type.",
           "enum": [
-            "Percent",
-            "Random",
-            "Tag",
-            "List"
+            "List",
+            "Query"
           ],
           "x-ms-enum": {
             "name": "SelectorType",
-            "modelAsString": false
+            "modelAsString": true
           }
         },
         "id": {
@@ -340,7 +339,6 @@
         "targets": {
           "type": "array",
           "description": "List of Target references.",
-          "minItems": 1,
           "items": {
             "$ref": "#/definitions/targetReference"
           }
@@ -351,11 +349,72 @@
       },
       "required": [
         "type",
-        "id",
-        "targets"
+        "id"
       ],
       "additionalProperties": false
     },
+    "listSelector": {
+      "type": "object",
+      "description": "Model that represents a list selector.",
+      "allOf": [
+        {
+          "$ref": "#/definitions/selector"
+        }
+      ],
+      "additionalProperties": false,
+      "x-ms-discriminator-value": "List"
+    },
+    "listSelectorParameters": {
+      "description": "Model that represents the list selector parameters.",
+      "type": "object",
+      "properties": {
+        "targets": {
+          "type": "array",
+          "description": "List of Target references.",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/targetReference"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "querySelector": {
+      "type": "object",
+      "description": "Model that represents a query selector.",
+      "allOf": [
+        {
+          "$ref": "#/definitions/selector"
+        }
+      ],
+      "properties": {
+        "parameters": {
+          "$ref": "#/definitions/querySelectorParameters"
+        }
+      },
+      "additionalProperties": false,
+      "x-ms-discriminator-value": "Query"
+    },
+    "querySelectorParameters": {
+      "description": "Model that represents the query selector parameters.",
+      "type": "object",
+      "properties": {
+        "queryString": {
+          "type": "string",
+          "description": "Azure Resource Graph (ARG) Query Language query for target resources."
+          },
+          "subscriptionIds": {
+            "type": "array",
+            "description": "Subscription id list to scope resource query.",
+            "items": {
+            "type": "string",
+            "description": "String of the availability zone ID."
+            },
+            "minItems": 1
+          }
+        },
+      "additionalProperties": false
+    },    
     "filter": {
       "type": "object",
       "description": "Model that represents available filter types that can be applied to a targets list.",
