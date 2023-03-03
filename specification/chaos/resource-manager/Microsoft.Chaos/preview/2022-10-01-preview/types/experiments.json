@@ -349,8 +349,7 @@
       },
       "required": [
         "type",
-        "id",
-        "targets"
+        "id"
       ],
       "additionalProperties": true
     },
