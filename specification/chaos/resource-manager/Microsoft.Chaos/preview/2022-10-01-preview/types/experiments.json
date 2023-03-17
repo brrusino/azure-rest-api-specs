@@ -328,20 +328,13 @@
           ],
           "x-ms-enum": {
             "name": "SelectorType",
-            "modelAsString": true
+            "modelAsString": false
           }
         },
         "id": {
           "type": "string",
           "description": "String of the selector ID.",
           "minLength": 1
-        },
-        "targets": {
-          "type": "array",
-          "description": "List of Target references.",
-          "items": {
-            "$ref": "#/definitions/targetReference"
-          }
         },
         "filter": {
           "$ref": "#/definitions/filter"
@@ -361,16 +354,6 @@
           "$ref": "#/definitions/selector"
         }
       ],
-      "additionalProperties": false,
-      "x-ms-discriminator-value": "List",
-      "required": [
-        "type",
-        "targets"
-      ]
-    },
-    "listSelectorParameters": {
-      "description": "Model that represents the list selector parameters.",
-      "type": "object",
       "properties": {
         "targets": {
           "type": "array",
@@ -382,7 +365,10 @@
         }
       },
       "additionalProperties": false,
-      "required": ["targets"]
+      "x-ms-discriminator-value": "List",
+      "required": [
+        "targets"
+      ]
     },
     "querySelector": {
       "type": "object",
@@ -392,21 +378,6 @@
           "$ref": "#/definitions/selector"
         }
       ],
-      "properties": {
-        "parameters": {
-          "$ref": "#/definitions/querySelectorParameters"
-        }
-      },
-      "additionalProperties": false,
-      "x-ms-discriminator-value": "Query",
-      "required": [
-        "type",
-        "parameters"
-      ]
-    },
-    "querySelectorParameters": {
-      "description": "Model that represents the query selector parameters.",
-      "type": "object",
       "properties": {
         "queryString": {
           "type": "string",
@@ -421,13 +392,14 @@
             },
             "minItems": 1
           }
-        },
+      },
       "additionalProperties": false,
+      "x-ms-discriminator-value": "Query",
       "required": [
         "queryString",
         "subscriptionIds"
       ]
-    },    
+    },   
     "filter": {
       "type": "object",
       "description": "Model that represents available filter types that can be applied to a targets list.",
@@ -441,7 +413,7 @@
           ],
           "x-ms-enum": {
             "name": "FilterType",
-            "modelAsString": true
+            "modelAsString": false
           }
         }
       },
